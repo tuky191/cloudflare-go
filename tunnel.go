@@ -18,6 +18,7 @@ type Tunnel struct {
 	ID             string             `json:"id,omitempty"`
 	Name           string             `json:"name,omitempty"`
 	Secret         string             `json:"tunnel_secret,omitempty"`
+	Source         string             `json:"config_src,omitempty"`
 	CreatedAt      *time.Time         `json:"created_at,omitempty"`
 	DeletedAt      *time.Time         `json:"deleted_at,omitempty"`
 	Connections    []TunnelConnection `json:"connections,omitempty"`
@@ -89,6 +90,7 @@ type TunnelTokenResponse struct {
 type TunnelCreateParams struct {
 	Name   string `json:"name,omitempty"`
 	Secret string `json:"tunnel_secret,omitempty"`
+	Source string `json:"config_src,omitempty"`
 }
 
 type TunnelUpdateParams struct {
@@ -241,7 +243,7 @@ func (api *API) CreateTunnel(ctx context.Context, rc *ResourceContainer, params 
 
 	uri := fmt.Sprintf("/accounts/%s/cfd_tunnel", rc.Identifier)
 
-	tunnel := Tunnel{Name: params.Name, Secret: params.Secret}
+	tunnel := Tunnel{Name: params.Name, Secret: params.Secret, Source: params.Source}
 
 	res, err := api.makeRequestContext(ctx, http.MethodPost, uri, tunnel)
 	if err != nil {
